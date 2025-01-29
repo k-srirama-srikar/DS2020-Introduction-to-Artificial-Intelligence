@@ -47,4 +47,11 @@
     Has lots of use on combinatorial searches... but in general it is not preferred to do optimization
 
 #### Search with partial observations
-Here a state becomes a belief state... 
+Here a state becomes a belief state... and once it performs some actions, the size of belief state changes... and the agent can still perform reational actions or rational behaviour... We'll look into it in Partially Observable Markov Decision Process...
+
+
+
+Now lets add some complexity to the search space... \
+Say, there are two adgents in the task env... ie... Adversarial Search....
+
+#### Adversarial Search
