@@ -1,5 +1,33 @@
 # Filename: l1.py
 
+class Node:
+    def __init__(self, value, parent):
+        self.parent = parent
+        self.value = value
+        self.children = []
+        
+    def add_child(self, child):
+        self.children.append(child)
+
+
+class Tree:
+    def __init__(self):
+        self.root=None
+
+    def insert(self, value, parent=None):
+        if self.root is None:
+            self.root = Node(value, parent)
+        else:
+            self.insert(value, parent)
+
+    def backtrack(self, node):
+        path = []
+        while node:
+            path.append(node.value)
+            node = node.parent
+        return path[::-1]
+
+
 class YantraCollector:
     """
     YantraCollector class to solve the yantra collection puzzle.
@@ -74,7 +102,10 @@ class YantraCollector:
         Args:
             position (tuple): The current position to check.
         """
-        pass  # TO DO
+        if position==self.revealed_yantra:
+            self.reveal_next_yantra_or_exit()
+            return True
+        return False
 
     def get_neighbors(self, position):
         """
@@ -83,7 +114,12 @@ class YantraCollector:
         Args:
             position (tuple): The current position of the player.
         """
-        pass  # TO DO
+        neighbors = []
+        for i, j in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+            new_i, new_j = position[0] + i, position[1] + j
+            if 0 <= new_i < self.n and 0 <= new_j < self.n and self.grid[new_i][new_j] != '#' and self.grid[new_i][new_j] != "T":
+                neighbors.append((new_i, new_j))
+        return neighbors
 
     def bfs(self, start, goal):
         """
@@ -93,6 +129,21 @@ class YantraCollector:
             start (tuple): The starting position.
             goal (tuple): The goal position.
         """
+        explored_list = []
+        frontier_list = []
+        frontier_list.append(start)
+        while frontier_list:
+            self.total_frontier_nodes += 1
+            current_node = frontier_list.pop(0)
+            if current_node == goal:
+                return explored_list
+            if current_node not in explored_list:
+                explored_list.append(current_node)
+                neighbors = self.get_neighbors(current_node)
+                for neighbor in neighbors:
+                    if neighbor not in explored_list:
+                        frontier_list.append(neighbor)
+        return None
         pass  # TO DO
 
     def solve(self, strategy):
@@ -102,6 +153,13 @@ class YantraCollector:
         Args:
             strategy (str): The search strategy (BFS or DFS).
         """
+        if strategy == "BFS":
+            path = self.bfs(self.start, self.revealed_yantra)
+            if path:
+                path += self.bfs(self.revealed_yantra, self.exit)
+                return path, self.total_frontier_nodes, len(path)
+        elif strategy == "DFS":
+            pass  # TO DO
         pass  # TO DO
 
 if __name__ == "__main__":
