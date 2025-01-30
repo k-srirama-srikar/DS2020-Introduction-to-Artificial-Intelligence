@@ -55,10 +55,65 @@ Now lets add some complexity to the search space... \
 Say, there are two adgents in the task env... ie... Adversarial Search....
 
 #### Adversarial Search
+> to be cont'd.....
 
 
 
 
 ### Day 08 - 30.01.2025
 
+#### Adverserial Search
+- Fully observable, static, deterministic, zero-sum, turn-taking game
+- We are interested in finding a strategy to win the game
+- Max player, min player...
+- ex 
+  ```
+              A
+            /   \
+          a1     a2
+          /\     /\
+        10  9   5  15
+  ```
+  Now the max player will chose a1 as in the next turn min player choose the terminal state. \
+  Each path is a sequence of actions alternating between max player and min player. \
+-  `MiniMax Algorithm`:  \
+    We are alternating between `min` and `max`
+    ```python
+    def max_value(state):
+        if terminal(state):
+            return utility(state)
+        s = child_gen_fun(state)
+        # s = [s1,s2,...., sn]
+        return max(min_value(s1), min_value(sn)) # all the values
+
+    def min_value(state):
+        if terminal(state):
+            return utility(state)
+        s = child_gen_fun(state)
+        return min(max_value(s1), max_value(sn))
+    
+    def minimax(state):
+        return max_value(state)
+        # or we can use the child gen function to get the list and 
+        # get the max of all the min_values of the children and
+        # then we would get the action as well because the child  
+        # generator function returns the action to proceed as well
+    ```
+    This is a brute force search algorithm... 
+    - $completeness$ - yes if search space is optimal
+    - $optimal$ - yes
+    - $time \space complexity$ $O(b^m)$
+    - $space \space complexity$ $O(b*m)$ \
+    Ex : for a game of chess $b \approx 35$ and $m = 100$
+
+- We can make the max min alg by pruning the search tree... this can reducing the search tree and we are not reducing the optimal payoff... \
+  This is called `alpha-beta pruning`... the $\alpha$ corresponds to the highest payoff we have found and similarly $\beta$ correspond to the value for min player \
+  The tree that givess max pruning is called a didatic seaech tree.
+  This reduce the complexity to $O(b^\frac{m}{2})$ 
+- Now we can have an evaluation function instead of the unility value, i.e., a heuristic... we could use pattern data bases ig... to create an evaluation value... \
+- ordering matters... pattern databases... \
+- When the agent cant go all the way, it has to make imperfect decisions...
+- Imperfect Decisions : Proposed by claude shannon (shanon's entropy)
+  - cutoff depth (replaces the terminal test)
+  - Eval func (replaces the utility func)
 

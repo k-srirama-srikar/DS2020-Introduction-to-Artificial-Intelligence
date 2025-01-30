@@ -19,6 +19,8 @@ class Tree:
             self.root = Node(value, parent)
         else:
             self.insert(value, parent)
+        if parent is not None:
+            parent.add_child()
 
     def backtrack(self, node):
         path = []
