@@ -1,21 +1,53 @@
-# Filename: l1.py
+# Filename: 142301013.py
 
 class Node:
+    '''
+    A node class to store the current position, parent, children
+    of a node in a tree
+    '''
     def __init__(self, value, parent=None):
+        """
+        Initializes the node with the position and parent.
+
+        Args:
+            value (tuple) : Tuple containing the position.
+            parent (Node object) : Parent of the node (self)
+        """
         self.parent = parent
         self.value = value
         self.children = []
         
     def add_child(self, child):
-        # child.parent = self
+        """
+        Adds a child to the node(self).
+
+        Args:
+            child (Node object): Child of the node.
+        """
         self.children.append(child)
 
 
 class Tree:
+    '''
+    A tree class to store the paths in the bfs or dfs
+    '''
     def __init__(self):
+        '''
+        Initilizes an empty tree with an empty root
+        '''
         self.root=None
 
     def insert(self, value, parent=None):
+        '''
+        Creates a node object and adds to the current tree
+
+        Args:
+            value (tuple) : the position of the node explored
+            parent (Node object) : node object of the parent of the value
+
+        Returns:
+            new_node (node object) : the node the contains the value
+        '''
         new_node = Node(value, parent)
         if self.root is None:
             self.root = new_node
@@ -116,11 +148,8 @@ class YantraCollector:
         Generates valid neighboring positions for the given position.
 
         Args:
-            position (Node): The current position of the player as a node object.
+            position (tuple): The current position of the player.
         """
-
-        # note that i'm considering the position as a node object rather than a tuple
-        # and i'm returning the reachable neighbors as node objects as well
         neighbors = []
         for i, j in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             new_i, new_j = position[0] + i, position[1] + j
@@ -157,11 +186,13 @@ class YantraCollector:
             explored_list.append(current)
             e_list_vals.append(current.value)
             neighbors = self.get_neighbors(current.value)
+            
             for neighbor in neighbors:
                 if neighbor not in e_list_vals and neighbor not in f_list_vals:
                     neighbor_node = path.insert(neighbor,current)
                     frontier_list.append(neighbor_node)
                     f_list_vals.append(neighbor)
+            
             if len(frontier_list) == 0:
                 return None, None, None
         
@@ -182,7 +213,6 @@ class YantraCollector:
         e_list_vals = []  
         f_list_vals = []  
         path = Tree()  
-        
         path.insert(start)
         frontier_list.append(path.root)
         f_list_vals.append(start)
@@ -192,7 +222,6 @@ class YantraCollector:
             f_list_vals.pop()  
             
             if current.value == goal:
-                # If we reach the goal, return the path
                 explored_list.append(current)
                 return path.backtrack(current), len(frontier_list), len(explored_list)
 
@@ -243,7 +272,6 @@ class YantraCollector:
             self.reveal_next_yantra_or_exit()
         return solution_path, self.total_frontier_nodes, self.total_explored_nodes
 
-        pass  # TO DO
 
 if __name__ == "__main__":
     grid = [
