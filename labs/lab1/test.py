@@ -45,4 +45,4 @@ def simulate(f_name, strat):
         print('\n')
 
 
-simulate('cases_1000.txt', 'BFS')
+simulate('cases_1000.txt', 'DFS')

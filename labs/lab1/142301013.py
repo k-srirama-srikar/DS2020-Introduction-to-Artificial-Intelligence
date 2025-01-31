@@ -218,8 +218,8 @@ class YantraCollector:
         f_list_vals.append(start)
         
         while frontier_list:
-            current = frontier_list.pop()  
-            f_list_vals.pop()  
+            current = frontier_list.pop(0)  
+            f_list_vals.pop(0)  
             
             if current.value == goal:
                 explored_list.append(current)
@@ -232,13 +232,13 @@ class YantraCollector:
             for neighbor in neighbors[::-1]:
                 if neighbor not in e_list_vals and neighbor not in f_list_vals:
                     neighbor_node = path.insert(neighbor, current)
-                    frontier_list.append(neighbor_node)  
-                    f_list_vals.append(neighbor)
+                    frontier_list.insert(0, neighbor_node)  
+                    f_list_vals.insert(0, neighbor)
             
             if len(frontier_list) == 0:
                 return None, None, None
 
-        explored_list.append(frontier_list.pop())
+        explored_list.append(frontier_list.pop(0))
         return path.backtrack(current), len(frontier_list), len(explored_list)
 
 
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     ]
 
     game = YantraCollector(grid)
-    strategy = "BFS"  # or "DFS"
+    strategy = "DFS"  # or "DFS"
     solution, total_frontier, total_explored = game.solve(strategy)
     if solution:
         print("Solution Path:", solution)
