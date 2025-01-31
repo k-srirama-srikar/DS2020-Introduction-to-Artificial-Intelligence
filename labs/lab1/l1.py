@@ -1,12 +1,13 @@
 # Filename: l1.py
 
 class Node:
-    def __init__(self, value, parent):
+    def __init__(self, value, parent=None):
         self.parent = parent
         self.value = value
         self.children = []
         
     def add_child(self, child):
+        # child.parent = self
         self.children.append(child)
 
 
@@ -15,16 +16,17 @@ class Tree:
         self.root=None
 
     def insert(self, value, parent=None):
+        new_node = Node(value, parent)
         if self.root is None:
-            self.root = Node(value, parent)
+            self.root = new_node
         else:
-            self.insert(value, parent)
-        if parent is not None:
-            parent.add_child()
+            parent.add_child(new_node)
+        return new_node
 
-    def backtrack(self, node):
+    def backtrack(self, node) -> list:
         path = []
-        while node:
+        while node!=None:
+            # print(path)
             path.append(node.value)
             node = node.parent
         return path[::-1]
@@ -114,12 +116,15 @@ class YantraCollector:
         Generates valid neighboring positions for the given position.
 
         Args:
-            position (tuple): The current position of the player.
+            position (Node): The current position of the player as a node object.
         """
+
+        # note that i'm considering the position as a node object rather than a tuple
+        # and i'm returning the reachable neighbors as node objects as well
         neighbors = []
         for i, j in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
             new_i, new_j = position[0] + i, position[1] + j
-            if 0 <= new_i < self.n and 0 <= new_j < self.n and self.grid[new_i][new_j] != '#' and self.grid[new_i][new_j] != "T":
+            if (0 <= new_i < self.n and 0 <= new_j < self.n) and self.grid[new_i][new_j] != '#' and self.grid[new_i][new_j] != "T":
                 neighbors.append((new_i, new_j))
         return neighbors
 
@@ -133,20 +138,80 @@ class YantraCollector:
         """
         explored_list = []
         frontier_list = []
-        frontier_list.append(start)
+        # frontier_list.append(start)
+        e_list_vals = []
+        f_list_vals = []
+        path = Tree()
+        path.insert(start)
+        frontier_list.append(path.root)
+        f_list_vals.append(start)
         while frontier_list:
-            self.total_frontier_nodes += 1
-            current_node = frontier_list.pop(0)
-            if current_node == goal:
-                return explored_list
-            if current_node not in explored_list:
-                explored_list.append(current_node)
-                neighbors = self.get_neighbors(current_node)
-                for neighbor in neighbors:
-                    if neighbor not in explored_list:
-                        frontier_list.append(neighbor)
-        return None
-        pass  # TO DO
+            if frontier_list[0].value == goal:
+                current = frontier_list.pop(0)
+                explored_list.append(current)
+                return path.backtrack(current), len(frontier_list), len(explored_list)
+            
+            current = frontier_list.pop(0)
+            f_list_vals.pop(0)
+            parent_node = current.parent
+            explored_list.append(current)
+            e_list_vals.append(current.value)
+            neighbors = self.get_neighbors(current.value)
+            for neighbor in neighbors:
+                if neighbor not in e_list_vals and neighbor not in f_list_vals:
+                    neighbor_node = path.insert(neighbor,current)
+                    frontier_list.append(neighbor_node)
+                    f_list_vals.append(neighbor)
+            if len(frontier_list) == 0:
+                return None
+        
+        explored_list.append(frontier_list.pop(0))
+        return path.backtrack(current), len(frontier_list), len(explored_list)
+        
+        
+    def dfs(self, start, goal):
+        """
+        Performs Depth-First Search (DFS) to find the path to the goal.
+
+        Args:
+            start (tuple): The starting position.
+            goal (tuple): The goal position.
+        """
+        explored_list = []  
+        frontier_list = []  
+        e_list_vals = []  
+        f_list_vals = []  
+        path = Tree()  
+        
+        path.insert(start)
+        frontier_list.append(path.root)
+        f_list_vals.append(start)
+        
+        while frontier_list:
+            current = frontier_list.pop()  
+            f_list_vals.pop()  
+            
+            if current.value == goal:
+                # If we reach the goal, return the path
+                explored_list.append(current)
+                return path.backtrack(current), len(frontier_list), len(explored_list)
+
+            explored_list.append(current)
+            e_list_vals.append(current.value)
+
+            neighbors = self.get_neighbors(current.value)
+            for neighbor in neighbors[::-1]:
+                if neighbor not in e_list_vals and neighbor not in f_list_vals:
+                    neighbor_node = path.insert(neighbor, current)
+                    frontier_list.append(neighbor_node)  
+                    f_list_vals.append(neighbor)
+            
+            if len(frontier_list) == 0:
+                return None
+
+        explored_list.append(frontier_list.pop())
+        return path.backtrack(current), len(frontier_list), len(explored_list)
+
 
     def solve(self, strategy):
         """
@@ -156,12 +221,25 @@ class YantraCollector:
             strategy (str): The search strategy (BFS or DFS).
         """
         if strategy == "BFS":
-            path = self.bfs(self.start, self.revealed_yantra)
-            if path:
-                path += self.bfs(self.revealed_yantra, self.exit)
-                return path, self.total_frontier_nodes, len(path)
+            func = self.bfs
+            
         elif strategy == "DFS":
-            pass  # TO DO
+            func = self.dfs
+        else :
+            raise "Invalid strategy"
+        
+        curr_pos = self.start
+        solution_path = [self.start]
+        while self.revealed_yantra:
+            path, frontier, explored = func(curr_pos, self.revealed_yantra)
+            solution_path += path[1:]
+            # print(f"Frontier: {frontier}, Explored: {explored}")
+            self.total_frontier_nodes += frontier
+            self.total_explored_nodes += explored
+            curr_pos = self.revealed_yantra
+            self.reveal_next_yantra_or_exit()
+        return solution_path, self.total_frontier_nodes, self.total_explored_nodes
+
         pass  # TO DO
 
 if __name__ == "__main__":
