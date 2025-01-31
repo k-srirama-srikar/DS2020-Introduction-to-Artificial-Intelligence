@@ -1,28 +1,16 @@
-# from l1 import YantraCollector
-
-# grid = []
-
-# with open('test-cases.txt', 'r+') as f:
-#     g1 = []
-#     # print(f)
-#     # print(f.readlines())
-#     for line in f.readlines():
-#         # print(line)
-#         l1 = line.strip()
-#         print(l1)
-#         if l1:
-#             g1.append(l1)
-#         else:
-#             grid.append(g1)
-#             g1 = []
-
-# print(grid)
-
-
-
 # Simulating from a text file of test cases
+import importlib.util
+import sys
 
-from l1 import YantraCollector
+file_path = './142301013.py'
+
+# Load the module dynamically
+spec = importlib.util.spec_from_file_location("TreeModule", file_path)
+tree_module = importlib.util.module_from_spec(spec)
+sys.modules["TreeModule"] = tree_module
+spec.loader.exec_module(tree_module)
+
+YantraCollector = tree_module.YantraCollector
 
 
 def load_grids(f_name):
