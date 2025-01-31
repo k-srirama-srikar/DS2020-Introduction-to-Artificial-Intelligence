@@ -163,7 +163,7 @@ class YantraCollector:
                     frontier_list.append(neighbor_node)
                     f_list_vals.append(neighbor)
             if len(frontier_list) == 0:
-                return None
+                return None, None, None
         
         explored_list.append(frontier_list.pop(0))
         return path.backtrack(current), len(frontier_list), len(explored_list)
@@ -207,7 +207,7 @@ class YantraCollector:
                     f_list_vals.append(neighbor)
             
             if len(frontier_list) == 0:
-                return None
+                return None, None, None
 
         explored_list.append(frontier_list.pop())
         return path.backtrack(current), len(frontier_list), len(explored_list)
@@ -232,6 +232,9 @@ class YantraCollector:
         solution_path = [self.start]
         while self.revealed_yantra:
             path, frontier, explored = func(curr_pos, self.revealed_yantra)
+            # print(path, frontier, explored)
+            if path is None:
+                return False, None, None
             solution_path += path[1:]
             # print(f"Frontier: {frontier}, Explored: {explored}")
             self.total_frontier_nodes += frontier
