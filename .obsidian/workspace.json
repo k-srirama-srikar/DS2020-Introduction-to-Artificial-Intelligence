@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "lectures/week_3/README.md",
+                "file": "lectures/week_1/README.md",
                 "mode": "source",
                 "source": false
               },
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "d33587ffff698770",
@@ -171,8 +170,13 @@
   },
   "active": "6032432adbc68f56",
   "lastOpenFiles": [
-    "README.md",
+    "lectures/week_1/infromed_searches/a*search.py",
+    "lectures/week_1/infromed_searches/greedy_bfs.py",
+    "lectures/week_1/infromed_searches",
+    "lectures/week_2/README.md",
+    "lectures/week_1/README.md",
     "lectures/week_3/README.md",
+    "README.md",
     "lectures/week_4/README.md",
     "lectures/week_4/Untitled.canvas",
     "Artificial-Intelligence-A-Modern-Approach-4th-Edition-1-compressed.pdf"
