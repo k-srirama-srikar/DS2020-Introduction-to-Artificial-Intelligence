@@ -74,10 +74,7 @@ Inference : proof techniques
 
 ---
 
-$$
-
-\mathcal{By:} \space \mathscr{Srirama \space Srikar}
-$$
+$\mathcal{By:} \space \mathscr{Srirama \space Srikar}$ 
 
  
 
