@@ -70,7 +70,12 @@ Representation :
 
 Inference : proof techniques
 - model checking :
-	- truth table enumeration
+	- truth table enumeration <br> M(KB) $\subset$ M( $\alpha$ ) 
+		- sound
+		- complete
+	- Backtracking search (DPLL)
+		- Local search alg...
+	- Randomized algorithms : hill climbing (Walk sat alg) (sat problems : satisfiability problems)
 
 ---
 
