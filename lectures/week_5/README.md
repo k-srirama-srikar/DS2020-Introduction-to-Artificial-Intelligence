@@ -59,7 +59,7 @@ Representation :
 ##### Propositional Logic
 1. Atomic sentences - single prop symbols... ex: $S_{11} \space \rightarrow is \space (1,1) \space safe$ , values : $true \space | \space false$ 
 2. Complex sentences: logical connectives
-	- Negation : $\neg S$ {$S, \neg S$ } $\rightarrow$ literal
+	- Negation : $\neg S$ { $S, \neg S$ } $\rightarrow$ literal
 	- Conjunction : $S_1 \wedge S_2$
 	- disjunction : $S_1 \vee S_2$ 
 	- implication : $S1 \rightarrow S2$
@@ -74,8 +74,7 @@ Inference : proof techniques
 
 ---
 
+<p align='center'> 
 $\mathcal{By:} \space \mathscr{Srirama \space Srikar}$ 
-
- 
-
+</p>
 
