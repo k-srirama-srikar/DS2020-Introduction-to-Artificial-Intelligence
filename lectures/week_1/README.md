@@ -31,7 +31,7 @@ End Sem - 45% \
 Attendance - 1%
 
 All put together we need to secure 40 pts to pass...
-Refrence Materials - Aima, [aima website](http://aima.cs.berkeley.edu/global-index.html) \
+Refrence Materials - AI a Modern Approach book, [AI a Modern Approach website](http://aima.cs.berkeley.edu/global-index.html) \
 All class materials will be accessible on moodle... \
 And no lec slides except for the first week... Only written notes...
 Intelligent Agent - acts rationally
