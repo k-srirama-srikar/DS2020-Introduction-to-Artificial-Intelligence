@@ -27,6 +27,9 @@
         > clause : disjunction of literals
     - resolution procedure: assumes that the KB is in Conjunctive Normal Form...
 
+    - full resolution rule (for cnf): \
+        $(l_1 \vee ... \vee l_i \vee ... l_k) \space \space (m_1 \vee ... \vee m_j \vee ... m_n)$ and $l_i= \neg m_j$ (complimentary literal)... we are basically deriving new clauses which are true... or somthing like that...
+
 
 ---
 
@@ -34,3 +37,6 @@
 $\mathcal{By:} \space \mathscr{Srirama \space Srikar}$ 
 </p>
 
+<span style="color: red;">This text is red.</span>
+<span style="color: #00FF00;">This text is green.</span>
+<span style="color: rgb(0, 0, 255);">This text is blue.</span>
