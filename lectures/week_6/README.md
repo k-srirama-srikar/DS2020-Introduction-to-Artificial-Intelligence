@@ -36,7 +36,3 @@
 <p align='center'> 
 $\mathcal{By:} \space \mathscr{Srirama \space Srikar}$ 
 </p>
-
-<span style="color: red;">This text is red.</span>
-<span style="color: #00FF00;">This text is green.</span>
-<span style="color: rgb(0, 0, 255);">This text is blue.</span>
