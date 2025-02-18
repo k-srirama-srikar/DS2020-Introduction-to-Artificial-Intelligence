@@ -1,0 +1,70 @@
+Object Hunt with Cost-Based Movement
+In this assignment, you will extend the Object Hunt problem from Lab 1 by
+introducing movement costs. Instead of walkable empty spaces represented by
+’.’, each cell now has a cost (integer) associated with moving to that cell. Your
+task is to implement Uniform Cost Search (UCS), Greedy Best-First Search
+(GBFS), and A-star Search to find the optimal path for collecting objects and
+reaching the exit.
+An example grid world is illustrated below:
+P 50 # 55 Y2
+50 # 55 10 20
+20 0 Y1 32 10
+# 50 0 # 100
+25 50 50 30 E
+As in the previous task, the player starts at position ’P’ and must collect
+’Y1’, after which the location of the next object is revealed. After collecting
+the final object, the exit ’E’ location is revealed. Note that we have values at
+every walkable position which represent the cost of moving from the previous
+location to the current location. Additionally, traps (T) have a very large
+cost(99999) and must be avoided.
+Grid Representation The grid consists of the following elements:
+• **P**: Player’s starting position.
+1
+• **Y1**, **Y2**, ... : objects to be collected sequentially (only the first
+object is known initially).
+• **#**: Walls that cannot be crossed.
+• **T**: Traps to be avoided by the player. The cost of moving into a trap
+is infinite.
+• **Numbers**: The cost of moving from the previous location to the
+current location. For example, if the player moves from ‘(0, 0)‘ to ‘(0,
+1)‘, the cost of this move is the value at ‘(0, 1)‘.
+• **?**: Hidden locations (objects or exit to be revealed).
+• **E**: Exit point (revealed after collecting all objects).
+• **objects (‘Y1‘, ‘Y2‘, ...) and Exit (‘E‘) have a constant movement cost
+of 0.**
+The accompanying Python file includes the starter code for the lab. The
+constructor of the objectCollector class processes the input grid and stores
+the details using appropriate variables. The constructor also automatically
+creates the sequence in which the objects must be collected. Helper functions
+for finding the positions, the objects, revealing the location of the next object
+or exit are also provided. Do not edit any of these functions.
+You are required to implement the following functions in the objectCollector
+class:
+• get neighbors(self, position): the child generator function that
+returns the list of adjacent positions reachable from the current position.
+The reachability of the adjacent positions are checked in the North, East,
+South and West order.
+• goal test(self, position): returns True if the goal condition is sat-
+isfied in the current position, else False.
+• ucs(self): finds the path from the start position to the goal position
+using the Uniform Cost Search algorithm. The function should return
+total frontier nodes, total explored nodes, and the total cost.
+• heuristic(self, position): Define a heuristic function to improve
+search efficiency. The heuristic does not need to be admissible, but you
+cannot use Euclidean or Manhattan distance or any other standard dis-
+tance metric.
+2
+• gbfs(self): finds the path from the start position to the goal position
+using the Greedy Best-First Search algorithm. The function should return
+total frontier nodes, total explored nodes, and the total cost.
+• a star(self): performs A* Search to reach the goal. The function
+should return total frontier nodes, total explored nodes, and the total
+cost.
+• solve(self, strategy): complete this function to call functions ucs(),
+gbfs(), a star() functions appropriately and consecutively for complet-
+ing the object hunt. Ensure to combine the path from the different consec-
+utive calls, as well the total number of nodes in the frontier and explored
+list for the entire search. The function should return the total number of
+nodes in the frontier and explored list, and the total cost.
+Your code should work with any grid size, at least one object, and arbitrary
+object pickup sequence
