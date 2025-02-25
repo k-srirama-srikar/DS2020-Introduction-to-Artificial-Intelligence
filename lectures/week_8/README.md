@@ -26,3 +26,17 @@ ie, replace x with y or something like that.
 
 unify(f(g(x,dog)), y) , f(g(cat,y), dog) \
 {x|cat, y|dog}
+
+
+
+
+Every clause in knowledge base is an Horn clause... \
+There is atmost one positive literal \
+$(A \wedge B) \Rarr C \space \space \equiv (\neg A \vee \neg B \vee C)$
+
+$\text{KB :  course(DS2020)} \\ \space \space \space \space \space \space \text{      teacher(ck)}$
+
+$\forall x \space \forall y \space (\text{teacher(x)} \wedge \text{course(y)}) \Rarr \text{instructor(x,y)}$
+
+
+Forward chaining and backward chaining... we are ignoring this as this is seemingly not relevant...
