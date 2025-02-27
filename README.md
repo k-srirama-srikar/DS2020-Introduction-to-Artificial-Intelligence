@@ -2,7 +2,11 @@
 
 | | |
 | --- | --- |
-| $Instructor$ | $Narayan \space C \space Krishnan$ |
+| $\text{Course Name}$ | $\text{Introduction to Artificial Intelligence}$ |
+| $\text{Instructor}$ | $\text{Narayan C Krishnan}$ |
+| $\text{Course Id}$ | $\text{DS2020}$ |
+| $\text{Course Period}$ | $\text{Spring 2025}$ |
+| $\text{Details}$ | [_s25ds2020_](https://seekayan.github.io/s25ds2020.html) |
 
 
 
@@ -30,5 +34,5 @@ Below is the list of the topics included in the labs
 
 
 ### References
-- [$\text{AI a Modern Approach}$](http://aima.cs.berkeley.edu/global-index.html)
-- [$\text{AI Computational Agents}$](https://artint.info/2e/html2e/ArtInt2e.html)
+- [AI a Modern Approach](http://aima.cs.berkeley.edu/global-index.html)
+- [AI Computational Agents](https://artint.info/2e/html2e/ArtInt2e.html)
