@@ -33,7 +33,11 @@ Attendance - 1%
 All put together we need to secure 40 pts to pass...
 Refrence Materials - AI a Modern Approach book, [AI a Modern Approach website](http://aima.cs.berkeley.edu/global-index.html) \
 All class materials will be accessible on moodle... \
-And no lec slides except for the first week... Only written notes...
+And no lec slides except for the first week... \
+Only written notes...
+
+---
+
 Intelligent Agent - acts rationally
 ```
      Environment 
