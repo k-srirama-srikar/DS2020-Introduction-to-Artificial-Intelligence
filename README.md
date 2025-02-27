@@ -1,5 +1,7 @@
 # DS2020 - Introduction to Artificial Intelligence
 
+### Course Info
+
 | | |
 | --- | --- |
 | $\text{Course Name}$ | $\text{Introduction to Artificial Intelligence}$ |
