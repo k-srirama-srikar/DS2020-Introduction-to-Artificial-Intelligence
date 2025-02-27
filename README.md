@@ -2,11 +2,11 @@
 
 | | |
 | --- | --- |
-| _Instructor_ | _Narayan C Krishnan_ |
+| $Instructor$ | $Narayan \space C \space Krishnan$ |
 
 
 
-
+### Guide to Repo
 
 Below is the list of the weeks and the corresponding topics
 
@@ -30,3 +30,5 @@ Below is the list of the topics included in the labs
 
 
 ### References
+- [$\text{AI a Modern Approach}$](http://aima.cs.berkeley.edu/global-index.html)
+- [$\text{AI Computational Agents}$](https://artint.info/2e/html2e/ArtInt2e.html)

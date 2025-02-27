@@ -103,5 +103,7 @@ Representing states
 **Forward Search** (Progression) : can result in irrelevant states... but it is a sound procedure
 
 
-**Backward Search** (Regression) : relevant state search...
+**Backward Search** (Regression) : relevant state search... the issue is that we may end up in states that are not consistent...
 
+
+**Goal Stack Planning** : Involves using a stack, which contains the actions that are applicable and (...)

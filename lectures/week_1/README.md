@@ -27,7 +27,7 @@
 - week 16 (1.5) - Summary 
 Tests - 30% (2 quizzes 15+15) \
 Labs - 25% (5*5 and all labs are take home?!) \
-End Sem - 45% \
+End Sem - 45% (A4 sized cheat sheet allowed) \
 Attendance - 1%
 
 All put together we need to secure 40 pts to pass...
