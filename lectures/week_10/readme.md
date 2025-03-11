@@ -57,3 +57,8 @@ graph LR
 ```
 
 then we have the tables that represent the probabilities... there can be multiple bayesian networks that can encode the same knowledge... 
+
+
+$P(x_1\dots x_N)$ = $\prod_{i=1}^{N}{P(x_i|Parents(x_i))}$
+
+The join distribution can be achieved by the product of the conditional distributions of the associated with it... and that is what the bayesian encodes(a specific factor of the random variables)...
