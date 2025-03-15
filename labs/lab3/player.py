@@ -36,7 +36,9 @@ class YantraCollector:
         Returns:
         - bool: True if position is valid, False otherwise.
         """
-        pass
+        if pos[0] < 0 or pos[0] >= self.grid_size[0] or pos[1] < 0 or pos[1] >= self.grid_size[1]:
+            return False
+        return True
 
     def move_player(self, player, direction):
         """
@@ -69,7 +71,7 @@ class YantraCollector:
         - pos (tuple): The position to evaluate.
 
         Returns:
-        - int: The utility value (lower values are better for the player).
+        - int: The utility value (higher the value the better for player 1).
         """
         pass
 
@@ -97,6 +99,13 @@ class YantraCollector:
         Returns:
         - str: A random move direction ('N', 'S', 'E', 'W').
         """
+        move_offsets = {'N': (0, 1), 'S': (0, -1), 'E': (1, 0), 'W': (-1, 0)}
+        valid_moves = []
+        for move in move_offsets:
+            new_pos = (pos[0] + move_offsets[move][0], pos[1] + move_offsets[move][1])
+            if self.is_valid(new_pos):
+                valid_moves.append(move)
+        return random.choice(valid_moves) if valid_moves else None
         return None
     
     def minimax_vanilla(self, pos, depth, max_turn=True):
