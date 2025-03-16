@@ -36,8 +36,10 @@ class YantraCollector:
         Returns:
         - bool: True if position is valid, False otherwise.
         """
+        # print(self.grid_size)
+        # print("Pos", pos)
         # returns FAlse if the position is outside the grid and True otherwise
-        if pos[0] < 0 or pos[0] >= self.grid_size[0] or pos[1] < 0 or pos[1] >= self.grid_size[1]:
+        if pos[0] < 0 or pos[0] >= self.grid_size or pos[1] < 0 or pos[1] >= self.grid_size:
             return False
         return True
 
@@ -81,6 +83,8 @@ class YantraCollector:
             return 1e9
         if p2 == self.goal_pos: 
             return -1e9
+        # we get the manhattan distance of the player from the goal and the opponent from the goal
+        # and then we return the difference of the distances
         p1_dist = abs(p1[0] - self.goal_pos[0]) + abs(p1[1] - self.goal_pos[1])
         p2_dist = abs(p2[0] - self.goal_pos[0]) + abs(p2[1] - self.goal_pos[1])
         return p2_dist - p1_dist
@@ -96,7 +100,57 @@ class YantraCollector:
         Returns:
         - str: The best move direction ('N', 'S', 'E', 'W').
         """
-        pass
+        # based on the strategy of player 1 we choose the best move
+        if self.p1_strat == "random":
+            return self.random_move(pos)
+        elif self.p1_strat == "minimax_vanilla":
+            # we initially explore the first set of game positions and 
+            # then we call the minimax for each of the possible moves
+            # and then we choose the move which gives the best value
+            depth = 7
+            best_dir = None
+            best_val = float('-inf')
+            dir_vals=[]
+            for dir in move_offsets:
+                p1_new = (pos[0] + move_offsets[dir][0], pos[1] + move_offsets[dir][1])
+                p2_new = (self.p2_pos[0] + move_offsets[dir][0], self.p2_pos[1] + move_offsets[dir][1])
+                if self.is_valid(p1_new):
+                    p1 = p1_new
+                else:
+                    continue
+                if self.is_valid(p2_new):
+                    p2 = p2_new
+                else:
+                    p2=self.p2_pos
+                new_pos = (p1, p2)
+                val = self.minimax_vanilla(new_pos, depth-1, False)
+                dir_vals.append((dir,val, new_pos))
+                if val > best_val:
+                    best_val = val
+                    best_dir = dir
+            return best_dir
+        elif self.p1_strat == "minimax":
+            depth = 5
+            best_dir = None
+            best_val = float('-inf')
+            for dir in move_offsets:
+                p1_new = (pos[0] + move_offsets[dir][0], pos[1] + move_offsets[dir][1])
+                p2_new = (self.p2_pos[0] + move_offsets[dir][0], self.p2_pos[1] + move_offsets[dir][1])
+                if self.is_valid(p1_new):
+                    p1 = p1_new
+                else:
+                    continue
+                if self.is_valid(p2_new):
+                    p2 = p2_new
+                else:
+                    p2=self.p2_pos
+                new_pos = (p1, p2)
+                val = self.minimax(new_pos, depth-1, False)
+                if val > best_val:
+                    best_val = val
+                    best_dir = dir
+            return best_dir
+            
     
     
 
@@ -135,16 +189,13 @@ class YantraCollector:
             return self.utility(pos)
         
         best_val = float('-inf') if max_turn else float('inf')
-        best_move = None
         for move in ['N', 'S', 'E', 'W']:
             new_pos = (pos[0], pos[1])
-            # self.move_player(1, move)
-            # self.move_player(2, move)
-            # if player == 1:
             p1_new = (new_pos[0][0] + move_offsets[move][0], new_pos[0][1] + move_offsets[move][1])
             if self.is_valid(p1_new):
                 new_pos = (p1_new, new_pos[1])
-            else: continue
+            else: 
+                continue
             # if its a valid move we update the position of the player 1
             # else we continue to the next move
             # if player 2 doesnt have a vlid move we continue the search
@@ -153,15 +204,15 @@ class YantraCollector:
             if self.is_valid(p2_new):
                 new_pos = (new_pos[0], p2_new)
             val = self.minimax_vanilla(new_pos, depth-1, not max_turn)
+            
             if max_turn:
                 if val > best_val:
                     best_val = val
-                    best_move = move
             else:
                 if val < best_val:
                     best_val = val
-                    best_move = move
-        pass
+        return best_val/10 if best_val>=1e4 else best_val
+        # return best_val
         
 
     def minimax(self, pos, depth, alpha=float('-inf'), beta=float('inf'), max_turn=True):
@@ -178,8 +229,48 @@ class YantraCollector:
         Returns:
         - int: The minimax score.
         """
-        pass
-
+        if pos[0] == self.goal_pos or depth == 0:
+            return self.utility(pos)
+        
+        if max_turn:
+            max_val = float('-inf')
+            for move in ['N', 'S', 'E', 'W']:
+                new_pos = (pos[0], pos[1])
+                p1_new = (new_pos[0][0] + move_offsets[move][0], new_pos[0][1] + move_offsets[move][1])
+                if self.is_valid(p1_new):
+                    new_pos = (p1_new, new_pos[1])
+                else:
+                    continue
+                p2_new = (new_pos[1][0] + move_offsets[move][0], new_pos[1][1] + move_offsets[move][1])
+                if self.is_valid(p2_new):
+                    new_pos = (new_pos[0], p2_new)
+                # we get the new position and then we call the minimax for the new position
+                val = self.minimax(new_pos, depth-1, alpha, beta, not max_turn)
+                max_val = max(max_val, val)
+                if max_val >= beta:
+                    return max_val
+                    # we prune the search here as the alpha is less than beta
+                alpha = max(alpha, val)
+            return max_val
+        else:
+            min_val = float('inf')
+            for move in ['N', 'S', 'E', 'W']:
+                new_pos = (pos[0], pos[1])
+                p1_new = (new_pos[0][0] + move_offsets[move][0], new_pos[0][1] + move_offsets[move][1])
+                if self.is_valid(p1_new):
+                    new_pos = (p1_new, new_pos[1])
+                else:
+                    continue
+                p2_new = (new_pos[1][0] + move_offsets[move][0], new_pos[1][1] + move_offsets[move][1])
+                if self.is_valid(p2_new):
+                    new_pos = (new_pos[0], p2_new)
+                val = self.minimax(new_pos, depth-1, alpha, beta, not max_turn)
+                min_val = min(min_val, val)
+                if min_val <= alpha:
+                    return min_val # here also we prune the search tree
+                beta = min(beta, val)
+            return min_val
+        
     def play_game(self):
         """
         Runs the game loop until a player reaches the goal or a draw occurs.
@@ -205,7 +296,9 @@ class YantraCollector:
                 best_move = AdversaryMove(self.p2_pos, self)
                 self.move_player(2, best_move)
                 self.move_player(1, best_move)  # P1 mimics P2
-                    
+            
+            # print(self.p1_pos, self.p2_pos)
+
             if self.p1_pos == self.goal_pos:
                 return "P1"
             
@@ -224,6 +317,7 @@ class YantraCollector:
         seen_positions = set()
         while True:
             state = (self.p1_pos, self.p2_pos)
+            # print("State",state)
             if self.p1_pos == self.p2_pos:
                 return "draw"
             if state in seen_positions:
@@ -239,7 +333,9 @@ class YantraCollector:
                 best_move = NoviceMove(self.p2_pos,self)  # Using NoviceMove
                 self.move_player(2, best_move)
                 self.move_player(1, best_move)  # P1 mimics P2
-                    
+            
+            # print(self.p1_pos, self.p2_pos)
+
             if self.p1_pos == self.goal_pos:
                 return "P1"
             
