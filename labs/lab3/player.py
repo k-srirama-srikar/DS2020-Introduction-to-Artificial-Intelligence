@@ -3,7 +3,7 @@
 '''
 import random
 from adversary import AdversaryMove, NoviceMove
-
+move_offsets = {'N': (0, 1), 'S': (0, -1), 'E': (1, 0), 'W': (-1, 0)}
 class YantraCollector:
     def __init__(self, p1_pos, p2_pos, goal_pos,grid_size,player1_strategy):
         """
@@ -69,12 +69,21 @@ class YantraCollector:
         Computes a utility score based on the player's distance to the goal vs the opponent's distance to the goal.
 
         Parameters:
-        - pos (tuple): The position to evaluate.
+        - pos (tuple): The position to evaluate. pos is a tuple of the position of Player 1 and Player 2.
 
         Returns:
         - int: The utility value (higher the value the better for player 1).
         """
-        pass
+        # returns the utility value based on the distance of the player from the goal and the distance of the opponent from the goal
+        p1 =  pos[0]
+        p2 =  pos[1]
+        if p1 == self.goal_pos:
+            return 1e9
+        if p2 == self.goal_pos: 
+            return -1e9
+        p1_dist = abs(p1[0] - self.goal_pos[0]) + abs(p1[1] - self.goal_pos[1])
+        p2_dist = abs(p2[0] - self.goal_pos[0]) + abs(p2[1] - self.goal_pos[1])
+        return p2_dist - p1_dist
 
     def best_player_move(self, pos):
         """
@@ -102,7 +111,6 @@ class YantraCollector:
         """
         # given a position we check for the directions which result in a valid move 
         # and then we choose a random direction from the valid moves
-        move_offsets = {'N': (0, 1), 'S': (0, -1), 'E': (1, 0), 'W': (-1, 0)}
         valid_moves = []
         for move in move_offsets:
             new_pos = (pos[0] + move_offsets[move][0], pos[1] + move_offsets[move][1])
@@ -123,6 +131,36 @@ class YantraCollector:
         Returns:
         - int: The minimax score if called recursively.
         """
+        if pos[0]==self.goal_pos or depth==0:
+            return self.utility(pos)
+        
+        best_val = float('-inf') if max_turn else float('inf')
+        best_move = None
+        for move in ['N', 'S', 'E', 'W']:
+            new_pos = (pos[0], pos[1])
+            # self.move_player(1, move)
+            # self.move_player(2, move)
+            # if player == 1:
+            p1_new = (new_pos[0][0] + move_offsets[move][0], new_pos[0][1] + move_offsets[move][1])
+            if self.is_valid(p1_new):
+                new_pos = (p1_new, new_pos[1])
+            else: continue
+            # if its a valid move we update the position of the player 1
+            # else we continue to the next move
+            # if player 2 doesnt have a vlid move we continue the search
+            # with the same position
+            p2_new = (new_pos[1][0] + move_offsets[move][0], new_pos[1][1] + move_offsets[move][1])
+            if self.is_valid(p2_new):
+                new_pos = (new_pos[0], p2_new)
+            val = self.minimax_vanilla(new_pos, depth-1, not max_turn)
+            if max_turn:
+                if val > best_val:
+                    best_val = val
+                    best_move = move
+            else:
+                if val < best_val:
+                    best_val = val
+                    best_move = move
         pass
         
 
