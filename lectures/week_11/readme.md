@@ -75,3 +75,50 @@ Example 2:
 Conditional Independence in BNs - Markov Blanket \
 ?? \
 Idk th this is
+
+
+Influence by enumeration
+- We want to estimate - $P(Q|e_1,\dots , e_k)$
+- step 1,2,3
+- slightly intelligent way to sum out variables from the join without actually constructing its explicit reprresentation.
+
+
+
+Evalustion Tree
+- recursive depth first search... but there will be redudancies in the evalustion tree made by vanilla enumeration
+
+
+Variable Elimination
+
+Factor zoo...
+- Factor Zoo I
+  - joint distn P(X,Y)... sums to 1
+  - Selected joint P(x,Y)... entries P(x,y) for fixed x all y, sums upto P(x)
+- Factor Zoo II
+  - Single Conditional... P(Y|x)... entries P(y|x) for fixed x, all y... sums to 1
+  - Family of conditionals... P(Y|X)... entries of P(y|x) for all x, for all y... sums to |X| cardinality of rv X
+- Factor Zoo III
+  - Specified family... P(y|X)... sums to who knows
+
+
+Example: Traffic Domain
+- Random Variables
+  - R: raining
+  - T: traffic
+  - L: latfe for flight
+  - 
+- Inference by enumeration - Procedural outline
+  - procedure tracks objects called factors
+  - inital factors are local CPTs (one per node)
+  - any known values are selected
+
+
+Operation 1 - Join factors (similar to a dbms join) \
+Operation 2 - Eliminate
+
+Marginilizing Early (=Variable Elimination)
+- $R \rarr T \rarr L$
+- Join on r $$
+- eliminate r
+- join on t
+- eliminate t
