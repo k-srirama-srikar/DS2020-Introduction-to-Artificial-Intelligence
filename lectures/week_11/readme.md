@@ -122,3 +122,7 @@ Marginilizing Early (=Variable Elimination)
 - eliminate r
 - join on t
 - eliminate t
+
+
+### Day 22 - 20.03.2025
+
