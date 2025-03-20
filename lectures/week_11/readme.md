@@ -70,6 +70,7 @@ Example 2:
 - A independent of D. ($A \rarr B \rarr E \larr D$)... here the common effect triplet(BED) is inactive as e is not being observed.
 - A and D independent given E. No
 - A and D are independent given B,E
+- The conditional independence will how even if we were to represent the smae conditions with a different bayesian network as we are ensuring that the bayesian network follows the global semantics are maintained.
 
 
 Conditional Independence in BNs - Markov Blanket \
@@ -118,11 +119,91 @@ Operation 2 - Eliminate
 
 Marginilizing Early (=Variable Elimination)
 - $R \rarr T \rarr L$
-- Join on r $$
+- Join on r 
 - eliminate r
 - join on t
 - eliminate t
 
 
 ### Day 22 - 20.03.2025
+
+Variable Elemination \
+The variables that are not a part of the query or if they are not a part of the evidence
+
+Evidence I:
+- If evidence, start with factors that select that evidence
+  -  No evidence uses these initial factors: $P(R)P(T|R)P(L|T)$
+- Conpute $P(L|r)$, the inintal factors become $P(+r) P(T|+r)P(L|T)$... r is observed 
+
+Evidence II:
+- result will bea selected joijnt of quey and evidence
+
+
+
+General Variable Elimination:
+- Query : $P(Q|e_1 \dots , e_k)$
+- Start with the inital factors
+  - Local CPTs (but instantiated by evidence)
+- While there are still hidden variables (not Q or evidence):
+  - pick a hidden variable H (in arbitrary order)
+  - join all factors mentioning H 
+  - eliminate (sum out) H
+- Join all the reamining factors and normalize
+- Once we normalize we end up with the answer for the query
+- And we get the exact value using variable Elimination
+
+Example:
+```mermaid
+graph TD
+  Z-->x1
+  Z-->x2
+  Z-->x3
+  x1-->y1
+  x2-->y2
+  x3-->y3
+```
+
+$P(z,x_1,x_2,x_3,y_1,y_2,y_3)=P(z)P(y_1|x_1)P(y_2|x_2)P(y_3|x_3)P(x_1|z)P(x_2|z)P(x_3|z)$
+
+For the below query: \
+$P(x_3|y_1,y_2,y_3), Q={x_3}, E={y_1,y_2, y_3}, H={z,x_1,x_2}$
+- Now first we try to eliminate Z
+  - $P(z)P(x_1|z)P(x_2|z)P(x_3|z)$
+  - what will we end by performing this join??
+  - $P(x_1|z)$ will be the join distribution $P(x_1,z)$ now if we multiply with $P(x_2|z)$ we end up with join distribution on $P(z, x_1, x_3)$ ...
+  - so we end up with join distribution $P(z, x_1,x_2,x_3)$ and there will be 16 entries
+  - Now if we sum it out we end uo with $P(x_1,x_2,x_3)$
+- Now we eliminate x1:
+  - $P(x_1,x_2,x_3)P(y_1|x_1)$
+  - and we end up with $P(x_2,x_3,y_1)$
+- Now eliminate x2: we end up with 
+
+
+Now if we go in the order $H={x_1,x_2,z}$
+- eliminate x1: we end up with the table $f_{x_1}(y_1|z)$
+- eliminate x2: we get the factor table $f_{x_2}(y_2|z)$
+- eliminate z: we get $f_z(y_1,y_2,y_3,x_3)$
+- and here the maximum table size is 2 and previously it is 8
+
+Thus the order of elimination matters...
+
+And determining the optimal order is and np-hard problem and there might not exist an optimal oredr in itself
+
+Thus exact inference in bayesian network is np-hard
+
+So we approximate
+
+__Approximate Inference: Sampling__
+- Sampling: without replacement(the distn changes with each sample is picked) or with replacement(samples are obtained from the same distn and the samples are independent of each other, i.e., the samples are iid)
+- we condseder the interval $[0,1]$ and divide it proportionally to the smaples... the area that we look at 
+
+Prior Sampling...(ignores the evidence)
+
+Rejection Sampling...(discard the sample that is inconsistent with the evidence we discard it) \
+It is still consistent even though we may discard a lot of samples
+
+Importance Sampling... We associate a weight to a sample
+
+The last sampling alg is Markov Chain Monte Carlo sampling which is very popular...
+
 
