@@ -1,3 +1,4 @@
 .obsidian
 lectures/**/*.ipynb*
 *.canvas
+lectures/week_12/Decision-Trees
