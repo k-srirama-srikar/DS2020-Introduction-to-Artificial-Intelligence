@@ -1,6 +1,8 @@
 ## Week 12
 
+
 ### Day 23 - 25.03.2025
+---
 
 #### Decision Tree Learning
 
@@ -15,3 +17,8 @@ A category of supervised learning is Decision Tree structure...
 Decision Tree Structure... \
 Learning CLassification Tree... \
 Entropy(I) represents the expected number of bits to encode the class (+ or -) of a randomly drawn member of I
+
+
+ID3 algorithm...\
+Iterative Dichotomizer 3 (Examples, Target-Attribute, Attributes) \
+Create a root node
