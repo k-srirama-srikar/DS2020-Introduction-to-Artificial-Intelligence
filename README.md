@@ -36,5 +36,5 @@ Below is the list of the topics included in the labs
 
 
 ### References
-- [AI a Modern Approach](http://aima.cs.berkeley.edu/global-index.html)
-- [AI Computational Agents](https://artint.info/2e/html2e/ArtInt2e.html)
+- [Artificial Intelligence: A Modern Approach](http://aima.cs.berkeley.edu/global-index.html)
+- [Artificial Intelligence: Foundation of Computational Agents](https://artint.info/3e/html/ArtInt3e.html)
