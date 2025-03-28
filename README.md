@@ -33,6 +33,7 @@ Below is the list of the topics included in the labs
 | --- | --- |
 | $\text{Lab 1}$ | $\text{BFS, DFS}$ |
 | $\text{Lab 2}$ | $\text{UCS, GreedyBFS, A*}$ |
+| $\text{Lab 3}$ | $\text{Minimax}$ |
 
 
 ### References
