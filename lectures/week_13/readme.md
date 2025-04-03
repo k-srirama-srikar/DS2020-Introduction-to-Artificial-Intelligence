@@ -31,6 +31,7 @@ Recursive definition of value
 - $V^*(s)=max_aQ^*(s,a)$
 - $Q^*(s,a)= \sum_{s'}T(s,a,s')[R(s,a,s')+ \gamma V^*(s')]$
 - $V*(s)=max_a\sum_{s'}T(s,a,s')[R(s,a,s')+ \gamma V^*(s')]$
+- we are going from s to s'
 
 
 
