@@ -1,5 +1,32 @@
 import pycosat
 
+import numpy as np
+
+def is_valid_sudoku(grid):
+    '''
+    Check if a given 9x9 Sudoku grid is valid.
+    This function checks if the Sudoku grid is valid according to the rules of Sudoku.
+    Here input is a 1D list of 81 elements(integers).
+    '''
+    print(grid)
+    grid = np.array(grid).reshape((9, 9))
+    
+    # Check rows and columns
+    for i in range(9):
+        if len(set(grid[i, :])) != 9 or len(set(grid[:, i])) != 9:
+            print("row/col")
+            return False
+
+    # Check 3x3 subgrids
+    for r in range(0, 9, 3):
+        for c in range(0, 9, 3):
+            subgrid = grid[r:r+3, c:c+3].flatten()
+            if len(set(subgrid)) != 9:
+                print("grid")
+                return False
+
+    return True
+
 def encode_boolean_var(r, c, v):
     '''
     We encode every possible value for every cell in the sudoku grid as a boolean variable.
@@ -35,9 +62,9 @@ def generate_clauses(sudoku):
     2. Each cell must have exactly one value.
     3. Each row must have each value exactly once.
     4. Each column must have each value exactly once.
-    5. Each 3x3 block must have each value exactly once.
+    5. Each smaller block (3x3) should contain all the values. 
     The 6th Clause is that the given values in the sudoku grid must be satisfied.
-    The 6th Clause is applied in the main function.
+    The 6th Clause is applied in the puzzle_to_cnf function.
     '''
     clauses = []
     
@@ -67,13 +94,18 @@ def generate_clauses(sudoku):
                 for r2 in range(r1 + 1, 9):
                     clauses.append([-encode_boolean_var(r1, c, v), -encode_boolean_var(r2, c, v)])
     
-    # Clause 5: Each block must have each value exactly once
+    # Clause 5: Each block must contain value only once and as the block has 9 values in total we
+    #           end up with having 9 unique values in the block, i.e., it satisfies the need for having
+    #           all values in the block
     for block_r in range(3):
         for block_c in range(3):
             for v in range(1, 10):
-                for i in range(3):
-                    for j in range(i + 1, 3):
-                        clauses.append([-encode_boolean_var(block_r * 3 + i, block_c * 3 + j, v), -encode_boolean_var(block_r * 3 + j, block_c * 3 + i, v)])
+                cells = [(block_r * 3 + r, block_c * 3 + c) for r in range(3) for c in range(3)]
+                for i in range(len(cells)):
+                    for j in range(i + 1, len(cells)):
+                        r1, c1 = cells[i]
+                        r2, c2 = cells[j]
+                        clauses.append([-encode_boolean_var(r1, c1, v), -encode_boolean_var(r2, c2, v)])
     return clauses
 
 def puzzle_to_cnf(sudoku):
@@ -117,13 +149,15 @@ def solve_sudoku(filename='p.txt'):
             sol_string = ""
             for row in solved_sudoku:
                 sol_string += ''.join(str(num) for num in row)
+            # solutions.append(is_valid_sudoku([int(digit) for digit in sol_string]))
+            # if we uncomment out the above line we can get the validity of the solution (we have to comment out the line below)
             solutions.append(sol_string)
     with open('output.txt', 'w') as f:
         for solution in solutions:
-            f.write(solution + '\n')
+            f.write(str(solution) + '\n')
     print("Solutions written to output.txt")
 
 
 if __name__ == "__main__":
-    
+    # we can test it with `solve_sudoku('tests.txt')` or we can just use `solve_sudoku()` which translates to `solve_sudoku('p.txt')`
     solve_sudoku()
